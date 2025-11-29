@@ -22,7 +22,7 @@ function App() {
     e.preventDefault()
     setError('')
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', { email, password })
+      const response = await axios.post('https://sistema-financiero.onrender.com/api/auth/login', { email, password })
       const jwt = response.data
       localStorage.setItem('jwt', jwt)
       setToken(jwt)
@@ -41,7 +41,7 @@ function App() {
 
   const cargarCuentas = () => {
     if (token) {
-      axios.get('http://localhost:8080/api/accounts/me')
+      axios.get('https://sistema-financiero.onrender.com/api/accounts/me')
         .then(res => setCuentas(res.data))
         .catch(err => { if(err.response && err.response.status === 403) logout() })
     }
@@ -51,7 +51,7 @@ function App() {
   useEffect(() => {
     if (token) {
       // FORMA BLINDADA: Enviamos el header manualmente aquí
-      axios.get('http://localhost:8080/api/accounts/me', {
+      axios.get('https://sistema-financiero.onrender.com/api/accounts/me', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -80,7 +80,7 @@ function App() {
       // Usamos la primera cuenta del usuario como origen
       const origenId = cuentas[0].id 
       
-      await axios.post('http://localhost:8080/api/transactions/transfer', {
+      await axios.post('https://sistema-financiero.onrender.com/api/transactions/transfer', {
         sourceAccountId: origenId,
         targetAccountId: destino, // El usuario escribe el ID destino (Ej: 2)
         amount: monto
